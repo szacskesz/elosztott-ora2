@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import javax.validation.Valid;
 
 @RestController
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 public class MainController {
 
     private final Calculator calculator;
+    private final Repository repository;
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
     public String main() {
@@ -22,5 +24,10 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET, path = "/calculator", produces = MediaType.APPLICATION_JSON_VALUE)
     public Double calculate(@Valid CalculatorRequestDTO requestDTO) {
         return this.calculator.add(requestDTO.getOperand1(), requestDTO.getOperand2());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/repository", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<String> repoSearch(@Valid RepositoryRequestDto requestDTO) {
+        return this.repository.searchByText(requestDTO.getQueryString());
     }
 }
